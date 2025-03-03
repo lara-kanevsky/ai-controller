@@ -1,5 +1,5 @@
 import { Component,input } from '@angular/core';
-import { ChatMessage } from '../../models/chat-message.model';
+import { ShowChatMessage } from '../../models/show-chat-message.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './chat-message.component.scss'
 })
 export class ChatMessageComponent {
-    message = input<ChatMessage>()
+    message = input<ShowChatMessage>()
 }

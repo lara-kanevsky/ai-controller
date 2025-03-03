@@ -5,22 +5,23 @@ namespace BackendEvoltis.Entities
 {
     public class ChatMessage : Entity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int ChatId { get; set; } // Navigation property
 
-        public virtual Chat Chat { get; set; } // Navigation property
-
-        public User Owner { get; set; }
+        [ForeignKey("ChatId")]
+        public virtual Chat Chat { get; set; }
+        public int OwnerId { get; set; }
 
         public string Content { get; set; }
 
-        public DateTime SentAt { get; set; } = DateTime.UtcNow;
+        public DateTime SentAt { get; set; } = DateTime.MinValue;
 
-        public SenderType Sender { get; set; }
+        public SenderType SenderType { get; set; }
 
-        public User User { get; set; }
+        [ForeignKey("SenderId")]
+        public virtual User Sender { get; set; }
+        public int SenderId { get; set; }
 
-        public Ai AI { get; set; }
+        public int AIId { get; set; }
+
     }
 }

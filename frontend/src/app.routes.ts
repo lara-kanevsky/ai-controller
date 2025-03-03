@@ -5,7 +5,7 @@ import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 
-export const appRoutes: Routes = [
+export const routes: Routes = [
     {
         path: '',
         component: AppLayout,

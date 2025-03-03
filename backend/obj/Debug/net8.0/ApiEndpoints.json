@@ -1,5 +1,114 @@
 [
   {
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_0",
+    "RelativePath": "ai/",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__DisplayClass0_0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__2",
+    "RelativePath": "ai/",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "entity",
+        "Type": "BackendEvoltis.Entities.Ai",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_1",
+    "RelativePath": "ai/{id}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_3",
+    "RelativePath": "ai/{id}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedEntity",
+        "Type": "BackendEvoltis.Entities.Ai",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_4",
+    "RelativePath": "ai/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_0",
     "RelativePath": "chat/",
@@ -109,8 +218,30 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.ChatMessage, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_0",
+    "ContainingType": "BackendEvoltis.Endpoints.ChatMessageEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapChatMessageEndpoints\u003Eb__0_0",
+    "RelativePath": "chatmessage/",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newChatMessage",
+        "Type": "BackendEvoltis.Dtos.ChatMessage.NewChatMessage",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BackendEvoltis.Endpoints.ChatMessageEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapChatMessageEndpoints\u003Eb__0_1",
     "RelativePath": "chatmessage/",
     "HttpMethod": "GET",
     "IsController": false,
@@ -125,30 +256,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__DisplayClass0_0\u00601[[BackendEvoltis.Entities.ChatMessage, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__2",
-    "RelativePath": "chatmessage/",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "BackendEvoltis.Entities.ChatMessage",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.ChatMessage, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_1",
+    "ContainingType": "BackendEvoltis.Endpoints.ChatMessageEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapChatMessageEndpoints\u003Eb__0_2",
     "RelativePath": "chatmessage/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -169,21 +278,32 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.ChatMessage, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_3",
-    "RelativePath": "chatmessage/{id}",
-    "HttpMethod": "PUT",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_0",
+    "RelativePath": "user/",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__DisplayClass0_0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__2",
+    "RelativePath": "user/",
+    "HttpMethod": "POST",
     "IsController": false,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "updatedEntity",
-        "Type": "BackendEvoltis.Entities.ChatMessage",
+        "Name": "entity",
+        "Type": "BackendEvoltis.Entities.User",
         "IsRequired": true
       }
     ],
@@ -196,9 +316,58 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.ChatMessage, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_1",
+    "RelativePath": "user/{id}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_3",
+    "RelativePath": "user/{id}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedEntity",
+        "Type": "BackendEvoltis.Entities.User",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_4",
-    "RelativePath": "chatmessage/{id}",
+    "RelativePath": "user/{id}",
     "HttpMethod": "DELETE",
     "IsController": false,
     "Order": 0,

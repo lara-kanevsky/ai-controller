@@ -112,7 +112,7 @@
         }
       }
     },
-    "/chatmessage": {
+    "/user": {
       "get": {
         "tags": [
           "BackendEvoltis"
@@ -131,7 +131,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChatMessage"
+                "$ref": "#/components/schemas/User"
               }
             }
           },
@@ -144,7 +144,7 @@
         }
       }
     },
-    "/chatmessage/{id}": {
+    "/user/{id}": {
       "get": {
         "tags": [
           "BackendEvoltis"
@@ -185,7 +185,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChatMessage"
+                "$ref": "#/components/schemas/User"
               }
             }
           },
@@ -218,6 +218,168 @@
           }
         }
       }
+    },
+    "/ai": {
+      "get": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ai"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/ai/{id}": {
+      "get": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ai"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/chatmessage": {
+      "post": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewChatMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/chatmessage/{id}": {
+      "get": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -229,7 +391,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "hashedKey": {
+          "key": {
             "type": "string",
             "nullable": true
           },
@@ -240,32 +402,37 @@
           "model": {
             "type": "string",
             "nullable": true
+          },
+          "ownerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/User"
           }
         },
         "additionalProperties": false
       },
       "Chat": {
-        "required": [
-          "ai",
-          "user"
-        ],
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int32"
           },
-          "user": {
-            "$ref": "#/components/schemas/User"
+          "userId": {
+            "type": "integer",
+            "format": "int32"
           },
-          "ai": {
-            "$ref": "#/components/schemas/Ai"
+          "aiId": {
+            "type": "integer",
+            "format": "int32"
           },
           "createdAt": {
             "type": "string",
             "format": "date-time"
           },
-          "chatMessage": {
+          "chatMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChatMessage"
@@ -282,11 +449,16 @@
             "type": "integer",
             "format": "int32"
           },
+          "chatId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "chat": {
             "$ref": "#/components/schemas/Chat"
           },
-          "owner": {
-            "$ref": "#/components/schemas/User"
+          "ownerId": {
+            "type": "integer",
+            "format": "int32"
           },
           "content": {
             "type": "string",
@@ -296,14 +468,52 @@
             "type": "string",
             "format": "date-time"
           },
-          "sender": {
+          "senderType": {
             "$ref": "#/components/schemas/SenderType"
           },
-          "user": {
+          "sender": {
             "$ref": "#/components/schemas/User"
           },
-          "ai": {
-            "$ref": "#/components/schemas/Ai"
+          "senderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "aiId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NewChatMessage": {
+        "type": "object",
+        "properties": {
+          "chatId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ownerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "senderType": {
+            "$ref": "#/components/schemas/SenderType"
+          },
+          "senderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "aiId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -322,6 +532,17 @@
           "id": {
             "type": "integer",
             "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "ais": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ai"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

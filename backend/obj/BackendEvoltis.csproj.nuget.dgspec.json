@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\larak\\source\\repos\\backend\\BackendEvoltis.csproj": {}
+    "C:\\Users\\larak\\source\\repos\\evoltis\\backend\\BackendEvoltis.csproj": {}
   },
   "projects": {
-    "C:\\Users\\larak\\source\\repos\\backend\\BackendEvoltis.csproj": {
+    "C:\\Users\\larak\\source\\repos\\evoltis\\backend\\BackendEvoltis.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\larak\\source\\repos\\backend\\BackendEvoltis.csproj",
+        "projectUniqueName": "C:\\Users\\larak\\source\\repos\\evoltis\\backend\\BackendEvoltis.csproj",
         "projectName": "BackendEvoltis",
-        "projectPath": "C:\\Users\\larak\\source\\repos\\backend\\BackendEvoltis.csproj",
+        "projectPath": "C:\\Users\\larak\\source\\repos\\evoltis\\backend\\BackendEvoltis.csproj",
         "packagesPath": "C:\\Users\\larak\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\larak\\source\\repos\\backend\\obj\\",
+        "outputPath": "C:\\Users\\larak\\source\\repos\\evoltis\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,6 +50,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[14.0.0, )"
+            },
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.13, )"

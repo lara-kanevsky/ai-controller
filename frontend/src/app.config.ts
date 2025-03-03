@@ -1,16 +1,24 @@
-import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ApplicationConfig } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling } from '@angular/router';
-import Aura from '@primeng/themes/aura';
-import { providePrimeNG } from 'primeng/config';
-import { appRoutes } from './app.routes';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { chatReducer, chatFeatureKey } from './app/store/chat/chat.reducer';
+import { ChatEffects } from './app/store/chat/chat.effects';
+import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-    providers: [
-        provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
-        provideHttpClient(withFetch()),
-        provideAnimationsAsync(),
-        providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } } })
-    ]
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideStore({
+      [chatFeatureKey]: chatReducer
+    }),
+    provideEffects([ChatEffects]),
+    provideStoreDevtools({
+      maxAge: 25,
+      logOnly: false
+    })
+  ]
 };

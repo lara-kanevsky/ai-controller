@@ -1,63 +1,111 @@
-import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../../services/chat.service'; // Make sure to import the ChatService
-import { ChatMessage } from '../../models/chat-message.model';
+import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
+import { ChatService } from '../../services/chat2.service';
 import { ChatMessageComponent } from '../chat-message/chat-message.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ShowChatMessage } from '../../models/show-chat-message.model';
+import { NewChatMessage } from '../../models/new-chat-message.model';
 
 @Component({
-    selector: 'app-chat',
-    imports: [ChatMessageComponent, ReactiveFormsModule],
-    templateUrl: './chat.component.html',
-    styleUrls: ['./chat.component.scss']
+  selector: 'app-chat',
+  standalone: true,
+  imports: [ChatMessageComponent, ReactiveFormsModule, CommonModule],
+  templateUrl: './chat.component.html',
+  styleUrl: './chat.component.scss'
 })
-export class ChatComponent implements OnInit {
-    messages: ChatMessage[] = [];
+export class ChatComponent implements OnInit, OnDestroy {
+  // Use signals for reactive state
+  messages = signal<ShowChatMessage[]>([]);
+  isLoading = signal<boolean>(false);
+  error = signal<string | null>(null);
 
-    formChat = new FormGroup({
-        textContent: new FormControl(''),
-        images: new FormControl(null)
+  chatForm: FormGroup;
+  private destroy$ = new Subject<void>();
+
+  private fb = inject(FormBuilder);
+  private chatService = inject(ChatService);
+
+  constructor() {
+    this.chatForm = this.fb.group({
+      textContent: ['', [Validators.required, Validators.minLength(1)]],
+      images: [null]
     });
+  }
 
-    constructor(private chatService: ChatService) {}
+  ngOnInit(): void {
+    this.loadMessages();
 
-    ngOnInit(): void {
-        this.loadMessages(); // Load messages when the component initializes
+    // Subscribe to messages from the store
+    this.chatService.messages$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(messages => {
+        this.messages.set(messages);
+      });
+
+    // Subscribe to loading state
+    this.chatService.loading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(loading => {
+        this.isLoading.set(loading);
+      });
+
+    // Subscribe to error state
+    this.chatService.error$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(error => {
+        this.error.set(error);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  loadMessages(): void {
+    // Simply dispatch the action to load messages
+    // The loading and error states will be handled by the subscriptions in ngOnInit
+    this.chatService.loadAllMessages();
+  }
+
+  sendMessage(): void {
+    if (this.chatForm.invalid) {
+      console.log("invalid");
+      this.chatForm.markAllAsTouched();
+      return;
     }
 
-    // Load all chat messages from the API
-    loadMessages(): void {
-        this.chatService.getAllChats().subscribe(
-            (data) => {
-                this.messages = data;
-            },
-            (error) => {
-                console.error('Error fetching chat messages:', error);
-            }
-        );
-    }
+    const { textContent, images } = this.chatForm.value;
+    const trimmedMessage = textContent.trim();
 
-    // Send a new chat message
-    sendMessage(): void {
-        const { textContent, images } = this.formChat.value;
-        const messageText = textContent ?? ''; // Default to empty string if null or undefined
+    if (!trimmedMessage) return;
 
-        if (messageText.trim()) {
-            const newMessage = new ChatMessage(
-                this.messages.length + 1, // Just incrementing for the sake of this example
-                'user', // Assuming the user is sending the message
-                messageText,
-                'Lare' // You can dynamically change the sender's name if needed
-            );
+    console.log("Actual message text: " + trimmedMessage);
+    const newMessage: NewChatMessage = {
+      senderId: 1,
+      content: trimmedMessage,
+      timestamp: new Date(),
+      chatId: 1,
+      senderType:1
+    };
 
-            this.chatService.createChatMessage(newMessage).subscribe(
-                () => {
-                    this.messages.push(newMessage); // Add the message to the chat list
-                    this.formChat.reset(); // Reset the form after sending
-                },
-                (error) => {
-                    console.error('Error sending chat message:', error);
-                }
-            );
-        }
-    }
+    // Dispatch action to create a message
+    // The response and loading states will be handled by the subscriptions in ngOnInit
+    this.chatService.createMessage(newMessage);
+
+    // Reset the form after dispatching the action
+    this.chatForm.reset();
+  }
+
+  retryLoadMessages(): void {
+    this.loadMessages();
+  }
+
+  trackByMessageId(index: number, message: ShowChatMessage): number {
+    console.log("elmsj:")
+    console.log(message)
+
+    return message.id;
+  }
 }

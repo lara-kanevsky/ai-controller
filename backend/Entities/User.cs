@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BackendEvoltis.Entities
 {
-    public class User
+    public class User : Entity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public virtual ICollection<Ai> Ais { get; set; } = new List<Ai>();
     }
 }

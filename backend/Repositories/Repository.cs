@@ -14,9 +14,11 @@ namespace BackendEvoltis.Repositories
             DbContext=dbContext;
         }
 
-        public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
+        public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await DbContext.Set<TEntity>().AddAsync(entity);
+            var entry = await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
+            await DbContext.SaveChangesAsync(cancellationToken); // Ensure changes are committed
+            return entry.Entity;
         }
 
         public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)

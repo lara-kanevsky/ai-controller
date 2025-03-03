@@ -15,5 +15,14 @@ namespace EvoltisBackend.Data
 
         public DbSet<User> Users { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(cm => cm.Chat)
+                .WithMany(c => c.ChatMessages)
+                .HasForeignKey(cm => cm.ChatId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
     }
 }

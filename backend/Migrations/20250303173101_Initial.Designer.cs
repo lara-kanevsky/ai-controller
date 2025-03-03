@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendEvoltis.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20250303022605_AddedEntities")]
-    partial class AddedEntities
+    [Migration("20250303173101_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace BackendEvoltis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("HashedKey")
+                    b.Property<string>("Key")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -36,11 +36,16 @@ namespace BackendEvoltis.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Ais");
                 });
@@ -61,10 +66,6 @@ namespace BackendEvoltis.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AIId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Chats");
                 });
@@ -88,24 +89,20 @@ namespace BackendEvoltis.Migrations
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Sender")
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderType")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AIId");
 
                     b.HasIndex("ChatId");
 
-                    b.HasIndex("OwnerId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("SenderId");
 
                     b.ToTable("ChatMessages");
                 });
@@ -115,6 +112,10 @@ namespace BackendEvoltis.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -146,63 +147,44 @@ namespace BackendEvoltis.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("BackendEvoltis.Entities.Chat", b =>
+            modelBuilder.Entity("BackendEvoltis.Entities.Ai", b =>
                 {
-                    b.HasOne("BackendEvoltis.Entities.Ai", "AI")
-                        .WithMany()
-                        .HasForeignKey("AIId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BackendEvoltis.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AI");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BackendEvoltis.Entities.ChatMessage", b =>
-                {
-                    b.HasOne("BackendEvoltis.Entities.Ai", "AI")
-                        .WithMany()
-                        .HasForeignKey("AIId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BackendEvoltis.Entities.Chat", "Chat")
-                        .WithMany("ChatMessage")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BackendEvoltis.Entities.User", "Owner")
-                        .WithMany()
+                        .WithMany("Ais")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BackendEvoltis.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("BackendEvoltis.Entities.ChatMessage", b =>
+                {
+                    b.HasOne("BackendEvoltis.Entities.Chat", "Chat")
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AI");
+                    b.HasOne("BackendEvoltis.Entities.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Chat");
 
-                    b.Navigation("Owner");
-
-                    b.Navigation("User");
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("BackendEvoltis.Entities.Chat", b =>
                 {
-                    b.Navigation("ChatMessage");
+                    b.Navigation("ChatMessages");
+                });
+
+            modelBuilder.Entity("BackendEvoltis.Entities.User", b =>
+                {
+                    b.Navigation("Ais");
                 });
 #pragma warning restore 612, 618
         }

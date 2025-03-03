@@ -1,11 +1,11 @@
-export class ChatMessage {
+export class ShowChatMessage {
     id: number;
-    senderType: 'user' | 'bot';
+    senderType: 1 | 2;
     content: string;
     timestamp: Date;
     senderName: string;
 
-    constructor(id: number, senderType: 'user' | 'bot', content: string, senderName: string, timestamp?: Date) {
+    constructor(id: number, senderType: 1 | 2, content: string, senderName: string, timestamp?: Date) {
         this.id = id;
         this.senderType = senderType;
         this.senderName = senderName;
