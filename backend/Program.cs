@@ -38,10 +38,10 @@ app.UseHttpsRedirection();
 //app.MapProductEndpoints();
 app.MapRepositoryEndpoints<Chat>("chat");
 app.MapRepositoryEndpoints<User>("user");
-app.MapRepositoryEndpoints<Ai>("ai");
 
 
 app.MapChatMessageEndpoints();
+app.MapAiEndpoints();
 
 
 

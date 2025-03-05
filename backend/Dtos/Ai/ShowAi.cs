@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using BackendEvoltis.Dtos;
+﻿using BackendEvoltis.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BackendEvoltis.Entities
+namespace BackendEvoltis.Dtos.Ai
 {
-    public class Ai : Entity
+    public class ShowAi
     {
-        public HashedString Key { get; set; }
+        public int Id { get; set; }
+        public string UnhashedKey { get; set; }
         public string Url { get; set; }
         public string Model { get; set; }
         public int OwnerId { get; set; } // Navigation property

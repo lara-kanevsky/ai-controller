@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BackendEvoltis")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a433636aaedb2abf48910f4663b87ecf1eadbf4c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a7948f9cf19a3b1261d386458fb0876d58b6d710")]
 [assembly: System.Reflection.AssemblyProductAttribute("BackendEvoltis")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BackendEvoltis")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

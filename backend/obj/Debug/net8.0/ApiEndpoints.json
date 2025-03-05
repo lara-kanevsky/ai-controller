@@ -1,7 +1,7 @@
 [
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_0",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_0",
     "RelativePath": "ai/",
     "HttpMethod": "GET",
     "IsController": false,
@@ -16,8 +16,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__DisplayClass0_0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__2",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_2",
     "RelativePath": "ai/",
     "HttpMethod": "POST",
     "IsController": false,
@@ -38,8 +38,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_1",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_1",
     "RelativePath": "ai/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -60,8 +60,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_3",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_3",
     "RelativePath": "ai/{id}",
     "HttpMethod": "PUT",
     "IsController": false,
@@ -87,8 +87,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_4",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Ai, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_4",
     "RelativePath": "ai/{id}",
     "HttpMethod": "DELETE",
     "IsController": false,
@@ -109,8 +109,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_0",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_0",
     "RelativePath": "chat/",
     "HttpMethod": "GET",
     "IsController": false,
@@ -125,8 +125,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__DisplayClass0_0\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__2",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_2",
     "RelativePath": "chat/",
     "HttpMethod": "POST",
     "IsController": false,
@@ -147,8 +147,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_1",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_1",
     "RelativePath": "chat/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -169,8 +169,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_3",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_3",
     "RelativePath": "chat/{id}",
     "HttpMethod": "PUT",
     "IsController": false,
@@ -196,8 +196,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_4",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.Chat, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_4",
     "RelativePath": "chat/{id}",
     "HttpMethod": "DELETE",
     "IsController": false,
@@ -278,8 +278,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_0",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_0",
     "RelativePath": "user/",
     "HttpMethod": "GET",
     "IsController": false,
@@ -294,8 +294,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__DisplayClass0_0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__2",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_2",
     "RelativePath": "user/",
     "HttpMethod": "POST",
     "IsController": false,
@@ -316,8 +316,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_1",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_1",
     "RelativePath": "user/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -338,8 +338,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_3",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_3",
     "RelativePath": "user/{id}",
     "HttpMethod": "PUT",
     "IsController": false,
@@ -365,8 +365,8 @@
     ]
   },
   {
-    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__0\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapRepositoryEndpoints\u003Eb__0_4",
+    "ContainingType": "BackendEvoltis.Endpoints.CrudEndpoints\u002B\u003C\u003Ec__1\u00601[[BackendEvoltis.Entities.User, BackendEvoltis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "\u003CMapRepositoryEndpoints\u003Eb__1_4",
     "RelativePath": "user/{id}",
     "HttpMethod": "DELETE",
     "IsController": false,

@@ -219,6 +219,61 @@
         }
       }
     },
+    "/chatmessage": {
+      "post": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewChatMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/chatmessage/{id}": {
+      "get": {
+        "tags": [
+          "BackendEvoltis"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/ai": {
       "get": {
         "tags": [
@@ -325,61 +380,6 @@
           }
         }
       }
-    },
-    "/chatmessage": {
-      "post": {
-        "tags": [
-          "BackendEvoltis"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewChatMessage"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "BackendEvoltis"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/chatmessage/{id}": {
-      "get": {
-        "tags": [
-          "BackendEvoltis"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   },
   "components": {
@@ -392,8 +392,7 @@
             "format": "int32"
           },
           "key": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/HashedString"
           },
           "url": {
             "type": "string",
@@ -481,6 +480,17 @@
           "aiId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HashedString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
