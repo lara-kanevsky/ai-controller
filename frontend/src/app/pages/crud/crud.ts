@@ -1,329 +1,331 @@
-// import { Component, OnInit, signal, ViewChild } from '@angular/core';
-// import { ConfirmationService, MessageService } from 'primeng/api';
-// import { Table, TableModule } from 'primeng/table';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { ButtonModule } from 'primeng/button';
-// import { RippleModule } from 'primeng/ripple';
-// import { ToastModule } from 'primeng/toast';
-// import { ToolbarModule } from 'primeng/toolbar';
-// import { RatingModule } from 'primeng/rating';
-// import { InputTextModule } from 'primeng/inputtext';
-// import { TextareaModule } from 'primeng/textarea';
-// import { SelectModule } from 'primeng/select';
-// import { RadioButtonModule } from 'primeng/radiobutton';
-// import { InputNumberModule } from 'primeng/inputnumber';
-// import { DialogModule } from 'primeng/dialog';
-// import { TagModule } from 'primeng/tag';
-// import { InputIconModule } from 'primeng/inputicon';
-// import { IconFieldModule } from 'primeng/iconfield';
-// import { ConfirmDialogModule } from 'primeng/confirmdialog';
-// import { Product, ProductService } from '../../services/ai.service';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Table, TableModule } from 'primeng/table';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { RatingModule } from 'primeng/rating';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { SelectModule } from 'primeng/select';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { DialogModule } from 'primeng/dialog';
+import { TagModule } from 'primeng/tag';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AiService } from '../../services/ai.service';
+import { Ai } from '../../models/ai.model';
 
-// interface Column {
-//     field: string;
-//     header: string;
-//     customExportHeader?: string;
-// }
+interface Column {
+    field: string;
+    header: string;
+    customExportHeader?: string;
+}
 
-// interface ExportColumn {
-//     title: string;
-//     dataKey: string;
-// }
+interface ExportColumn {
+    title: string;
+    dataKey: string;
+}
 
-// @Component({
-//     selector: 'app-crud',
-//     standalone: true,
-//     imports: [
-//         CommonModule,
-//         TableModule,
-//         FormsModule,
-//         ButtonModule,
-//         RippleModule,
-//         ToastModule,
-//         ToolbarModule,
-//         RatingModule,
-//         InputTextModule,
-//         TextareaModule,
-//         SelectModule,
-//         RadioButtonModule,
-//         InputNumberModule,
-//         DialogModule,
-//         TagModule,
-//         InputIconModule,
-//         IconFieldModule,
-//         ConfirmDialogModule
-//     ],
-//     template: `
-//         <p-toolbar styleClass="mb-6">
-//             <ng-template #start>
-//                 <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
-//                 <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
-//             </ng-template>
+@Component({
+    selector: 'app-crud',
+    standalone: true,
+    imports: [
+        CommonModule,
+        TableModule,
+        FormsModule,
+        ButtonModule,
+        RippleModule,
+        ToastModule,
+        ToolbarModule,
+        RatingModule,
+        InputTextModule,
+        TextareaModule,
+        SelectModule,
+        RadioButtonModule,
+        InputNumberModule,
+        DialogModule,
+        TagModule,
+        InputIconModule,
+        IconFieldModule,
+        ConfirmDialogModule
+    ],
+    template: `
+        <p-toolbar styleClass="mb-6">
+            <ng-template #start>
+                <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+                <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
+            </ng-template>
 
-//             <ng-template #end>
-//                 <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
-//             </ng-template>
-//         </p-toolbar>
+            <ng-template #end>
+                <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+            </ng-template>
+        </p-toolbar>
 
-//         <p-table
-//             #dt
-//             [value]="products()"
-//             [rows]="10"
-//             [columns]="cols"
-//             [paginator]="true"
-//             [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-//             [tableStyle]="{ 'min-width': '75rem' }"
-//             [(selection)]="selectedProducts"
-//             [rowHover]="true"
-//             dataKey="id"
-//             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-//             [showCurrentPageReport]="true"
-//             [rowsPerPageOptions]="[10, 20, 30]"
-//         >
-//             <ng-template #caption>
-//                 <div class="flex items-center justify-between">
-//                     <h5 class="m-0">Manage my AIs</h5>
-//                     <p-iconfield>
-//                         <p-inputicon styleClass="pi pi-search" />
-//                         <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
-//                     </p-iconfield>
-//                 </div>
-//             </ng-template>
-//             <ng-template #header>
-//                 <tr>
-//                     <th style="width: 3rem">
-//                         <p-tableHeaderCheckbox />
-//                     </th>
-//                     <th pSortableColumn="name" style="min-width:16rem">
-//                         Model name
-//                         <p-sortIcon field="name" />
-//                     </th>
+        <p-table
+            #dt
+            [value]="products()"
+            [rows]="10"
+            [columns]="cols"
+            [paginator]="true"
+            [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [(selection)]="selectedProducts"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 20, 30]"
+        >
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <h5 class="m-0">Manage my AIs</h5>
+                    <p-iconfield>
+                        <p-inputicon styleClass="pi pi-search" />
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
+                    </p-iconfield>
+                </div>
+            </ng-template>
+            <ng-template #header>
+                <tr>
+                    <th style="width: 3rem">
+                        <p-tableHeaderCheckbox />
+                    </th>
+                    <th pSortableColumn="model" style="min-width:16rem">
+                        Model name
+                        <p-sortIcon field="model" />
+                    </th>
 
-//                     <th pSortableColumn="category" style="min-width:10rem">
-//                         Category
-//                         <p-sortIcon field="category" />
-//                     </th>
+                    <th pSortableColumn="url" style="min-width:10rem">
+                        Url
+                        <p-sortIcon field="url" />
+                    </th>
 
-//                     <th style="min-width: 12rem"></th>
-//                 </tr>
-//             </ng-template>
-//             <ng-template #body let-product>
-//                 <tr>
-//                     <td style="width: 3rem">
-//                         <p-tableCheckbox [value]="product" />
-//                     </td>
-//                     <td style="min-width: 16rem">{{ product.model }}</td>
+                    <th style="min-width: 12rem"></th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-product>
+                <tr>
+                    <td style="width: 3rem">
+                        <p-tableCheckbox [value]="product" />
+                    </td>
+                    <td style="min-width: 16rem">{{ product.model }}</td>
 
-//                     <td>{{ product.category }}</td>
-//                     <td>
-//                         <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct(product)" />
-//                         <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(product)" />
-//                     </td>
-//                 </tr>
-//             </ng-template>
-//         </p-table>
+                    <td>{{ product.url }}</td>
+                    <td>
+                        <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct(product)" />
+                        <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(product)" />
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
 
-//         <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true">
-//             <ng-template #content>
-//                 <div class="flex flex-col gap-6">
-//                     <div>
-//                         <label for="name" class="block font-bold mb-3">Name</label>
-//                         <input type="text" pInputText id="name" [(ngModel)]="product.model" required autofocus fluid />
-//                         <small class="text-red-500" *ngIf="submitted && !product.model">Name is required.</small>
-//                     </div>
-
-
-
+        <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true">
+            <ng-template #content>
+                <div class="flex flex-col gap-6">
+                    <div>
+                        <label for="name" class="block font-bold mb-3">Name</label>
+                        <input type="text" pInputText id="name" [(ngModel)]="product.model" required autofocus fluid />
+                        <small class="text-red-500" *ngIf="submitted && !product.model">Name is required.</small>
+                    </div>
 
 
 
 
-//                 </div>
-//             </ng-template>
 
-//             <ng-template #footer>
-//                 <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-//                 <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
-//             </ng-template>
-//         </p-dialog>
 
-//         <p-confirmdialog [style]="{ width: '450px' }" />
-//     `,
-//     providers: [MessageService, ProductService, ConfirmationService]
-// })
-// export class Crud implements OnInit {
-//     productDialog: boolean = false;
 
-//     products = signal<Product[]>([]);
+                </div>
+            </ng-template>
 
-//     product!: Product;
+            <ng-template #footer>
+                <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+                <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
+            </ng-template>
+        </p-dialog>
 
-//     selectedProducts!: Product[] | null;
+        <p-confirmdialog [style]="{ width: '450px' }" />
+    `,
+    providers: [MessageService, AiService, ConfirmationService]
+})
+export class Crud implements OnInit {
+    productDialog: boolean = false;
 
-//     submitted: boolean = false;
+    products = signal<Ai[]>([]);
 
-//     statuses!: any[];
+    product!: Ai;
 
-//     @ViewChild('dt') dt!: Table;
+    selectedProducts!: Ai[] | null;
 
-//     exportColumns!: ExportColumn[];
+    submitted: boolean = false;
 
-//     cols!: Column[];
+    statuses!: any[];
 
-//     constructor(
-//         private productService: ProductService,
-//         private messageService: MessageService,
-//         private confirmationService: ConfirmationService
-//     ) {}
+    @ViewChild('dt') dt!: Table;
 
-//     exportCSV() {
-//         this.dt.exportCSV();
-//     }
+    exportColumns!: ExportColumn[];
 
-//     ngOnInit() {
-//         this.loadDemoData();
-//     }
+    cols!: Column[];
 
-//     loadDemoData() {
-//         console.log("loading demo data")
-//         this.productService.getProducts().then((data:Product[]) => {
-//             this.products.set(data);
-//         });
+    constructor(
+        private aiService: AiService,
+        private messageService: MessageService,
+        private confirmationService: ConfirmationService
+    ) {}
 
-//         this.statuses = [
-//             { label: 'INSTOCK', value: 'instock' },
-//             { label: 'LOWSTOCK', value: 'lowstock' },
-//             { label: 'OUTOFSTOCK', value: 'outofstock' }
-//         ];
+    exportCSV() {
+        this.dt.exportCSV();
+    }
 
-//         this.cols = [
-//             { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
-//             { field: 'name', header: 'Name' },
-//             { field: 'image', header: 'Image' },
-//             { field: 'price', header: 'Price' },
-//             { field: 'category', header: 'Category' }
-//         ];
+    ngOnInit() {
+        this.loadDemoData();
+    }
 
-//         this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
-//     }
+    loadDemoData() {
+        console.log("loading demo data")
+        this.aiService.getAllAis().subscribe((data: Ai[]) => {
+            this.products.set(data);
+        });
 
-//     onGlobalFilter(table: Table, event: Event) {
-//         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-//     }
+        this.statuses = [
+            { label: 'INSTOCK', value: 'instock' },
+            { label: 'LOWSTOCK', value: 'lowstock' },
+            { label: 'OUTOFSTOCK', value: 'outofstock' }
+        ];
 
-//     openNew() {
-//         this.product = {};
-//         this.submitted = false;
-//         this.productDialog = true;
-//     }
+        this.cols = [
+            { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
+            { field: 'name', header: 'Name' },
+            { field: 'image', header: 'Image' },
+            { field: 'price', header: 'Price' },
+            { field: 'category', header: 'Category' }
+        ];
 
-//     editProduct(product: Product) {
-//         this.product = { ...product };
-//         this.productDialog = true;
-//     }
+        this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+    }
 
-//     deleteSelectedProducts() {
-//         this.confirmationService.confirm({
-//             message: 'Are you sure you want to delete the selected products?',
-//             header: 'Confirm',
-//             icon: 'pi pi-exclamation-triangle',
-//             accept: () => {
-//                 this.products.set(this.products().filter((val) => !this.selectedProducts?.includes(val)));
-//                 this.selectedProducts = null;
-//                 this.messageService.add({
-//                     severity: 'success',
-//                     summary: 'Successful',
-//                     detail: 'Products Deleted',
-//                     life: 3000
-//                 });
-//             }
-//         });
-//     }
+    onGlobalFilter(table: Table, event: Event) {
+        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    }
 
-//     hideDialog() {
-//         this.productDialog = false;
-//         this.submitted = false;
-//     }
+    openNew() {
+        this.product = { id: -1,
+            url: '',
+            model: ''};
+        this.submitted = false;
+        this.productDialog = true;
+    }
 
-//     deleteProduct(product: Product) {
-//         this.confirmationService.confirm({
-//             message: 'Are you sure you want to delete ' + product.model + '?',
-//             header: 'Confirm',
-//             icon: 'pi pi-exclamation-triangle',
-//             accept: () => {
-//                 this.products.set(this.products().filter((val) => val.id !== product.id));
-//                 this.product = {};
-//                 this.messageService.add({
-//                     severity: 'success',
-//                     summary: 'Successful',
-//                     detail: 'Product Deleted',
-//                     life: 3000
-//                 });
-//             }
-//         });
-//     }
+    editProduct(product: Ai) {
+        this.product = { ...product };
+        this.productDialog = true;
+    }
 
-//     findIndexById(id: string): number {
-//         let index = -1;
-//         for (let i = 0; i < this.products().length; i++) {
-//             if (this.products()[i].id === id) {
-//                 index = i;
-//                 break;
-//             }
-//         }
+    deleteSelectedProducts() {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to delete the selected products?',
+            header: 'Confirm',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.products.set(this.products().filter((val) => !this.selectedProducts?.includes(val)));
+                this.selectedProducts = null;
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Products Deleted',
+                    life: 3000
+                });
+            }
+        });
+    }
 
-//         return index;
-//     }
+    hideDialog() {
+        this.productDialog = false;
+        this.submitted = false;
+    }
 
-//     createId(): string {
-//         let id = '';
-//         var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//         for (var i = 0; i < 5; i++) {
-//             id += chars.charAt(Math.floor(Math.random() * chars.length));
-//         }
-//         return id;
-//     }
+    deleteProduct(product: Ai) {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to delete ' + product.model + '?',
+            header: 'Confirm',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.products.set(this.products().filter((val) => val.id !== product.id));
+                this.product = { id: -1,
+                    url: '',
+                    model: ''};
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Product Deleted',
+                    life: 3000
+                });
+            }
+        });
+    }
 
-//     getSeverity(status: string) {
-//         switch (status) {
-//             case 'INSTOCK':
-//                 return 'success';
-//             case 'LOWSTOCK':
-//                 return 'warn';
-//             case 'OUTOFSTOCK':
-//                 return 'danger';
-//             default:
-//                 return 'info';
-//         }
-//     }
+    findIndexById(id: number): number {
+        let index = -1;
+        for (let i = 0; i < this.products().length; i++) {
+            if (this.products()[i].id === id) {
+                index = i;
+                break;
+            }
+        }
 
-//     saveProduct() {
-//         this.submitted = true;
-//         let _products = this.products();
-//         if (this.product.model?.trim()) {
-//             if (this.product.id) {
-//                 _products[this.findIndexById(this.product.id)] = this.product;
-//                 this.products.set([..._products]);
-//                 this.messageService.add({
-//                     severity: 'success',
-//                     summary: 'Successful',
-//                     detail: 'Product Updated',
-//                     life: 3000
-//                 });
-//             } else {
-//                 this.product.id = this.createId();
-//                 this.messageService.add({
-//                     severity: 'success',
-//                     summary: 'Successful',
-//                     detail: 'Product Created',
-//                     life: 3000
-//                 });
-//                 this.products.set([..._products, this.product]);
-//             }
+        return index;
+    }
 
-//             this.productDialog = false;
-//             this.product = {};
-//         }
-//     }
-// }
+    createId(): number {
+        return Math.floor(10000 + Math.random() * 90000); // Generates a 5-digit random number
+    }
+
+    getSeverity(status: string) {
+        switch (status) {
+            case 'INSTOCK':
+                return 'success';
+            case 'LOWSTOCK':
+                return 'warn';
+            case 'OUTOFSTOCK':
+                return 'danger';
+            default:
+                return 'info';
+        }
+    }
+
+    saveProduct() {
+        this.submitted = true;
+        let _products = this.products();
+        if (this.product.model?.trim()) {
+            if (this.product.id) {
+                _products[this.findIndexById(this.product.id)] = this.product;
+                this.products.set([..._products]);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Product Updated',
+                    life: 3000
+                });
+            } else {
+                this.product.id = this.createId();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Product Created',
+                    life: 3000
+                });
+                this.products.set([..._products, this.product]);
+            }
+
+            this.productDialog = false;
+            this.product = {id: -1,
+                url: '',
+                model: ''};
+        }
+    }
+}

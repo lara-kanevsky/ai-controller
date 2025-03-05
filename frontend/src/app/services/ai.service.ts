@@ -1,34 +1,29 @@
 import { inject, Injectable, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ChatActions } from '../store/chat/chat.actions';
-import {
-  selectAllMessages,
-  selectSelectedMessage,
-  selectChatLoading,
-  selectChatError
-} from '../store/chat/chat.selectors';
 import { Ai } from '../models/ai.model';
 import { AiActions } from '../store/ai/ai-table.actions';
 import { selectAis } from '../store/ai/ai.selectors';
+import { HttpClient } from '@angular/common/http';
+import { AiApiService } from '../api/ai-api.service';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
-export class AiService{
-
-
-
+export class AiService {
     private store = inject(Store);
+    private http = inject(HttpClient);
+
     ais$: Observable<Ai[]> = this.store.select(selectAis);
 
+    addAi(ai: Ai): void {
+        this.store.dispatch(AiActions.addAi({ ai }));
+    }
 
-  addAi(ai:Ai): void {
-    this.store.dispatch(AiActions.addAi({ai}));
-  }
-
-  removeAi(ai: Ai): void {
-    this.store.dispatch(AiActions.removeAi({ai}));
-  }
-
+    removeAi(ai: Ai): void {
+        this.store.dispatch(AiActions.removeAi({ ai }));
+    }
+    getAllAis(): Observable<Ai[]> {
+        return this.http.get<Ai[]>('https://localhost:7214/ai');
+    }
 }

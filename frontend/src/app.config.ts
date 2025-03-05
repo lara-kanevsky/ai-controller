@@ -8,6 +8,7 @@ import { chatReducer, chatFeatureKey } from './app/store/chat/chat.reducer';
 import { ChatEffects } from './app/store/chat/chat.effects';
 import { routes } from './app.routes';
 import { aiFeatureKey, aiReducer } from './app/store/ai/ai.reducer';
+import { AiEffects } from './app/store/ai/ai.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
       [chatFeatureKey]: chatReducer,
       [aiFeatureKey]: aiReducer
     }),
-    provideEffects([ChatEffects]),
+    provideEffects([ChatEffects,AiEffects]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: false
