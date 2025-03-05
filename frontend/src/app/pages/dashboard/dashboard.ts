@@ -8,7 +8,7 @@ import { ChatComponent } from '../../components/chat/chat.component';
 
 @Component({
     selector: 'app-dashboard',
-    imports: [StatsWidget, RecentSalesWidget, BestSellingWidget, RevenueStreamWidget, NotificationsWidget, ChatComponent],
+    imports: [ ChatComponent],
     template: `
         <div class="grid grid-cols-12 gap-8">
             <!-- <app-stats-widget class="contents" /> -->

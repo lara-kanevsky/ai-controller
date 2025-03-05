@@ -17,7 +17,13 @@ export const initialState: AiState = {
 export const aiReducer = createReducer(
   initialState,
   on(AiAPIActions.saveSuccess, (state, action) => ({
-    ais: [...state.ais, action.ai], // Add the created Ai to the state
+    ...state,
+    ais: [...state.ais, action.ai],
+  })),
+  on(AiAPIActions.loadAllSuccess, (state, { ais }) => ({
+    ...state,
+    ais,
+    loading: false
   })),
   on(AiActions.removeAi, (currentState,action) => ({
     ...currentState,

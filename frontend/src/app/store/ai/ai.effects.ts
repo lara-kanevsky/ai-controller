@@ -18,7 +18,7 @@ export class AiEffects {
   loadAis$ = createEffect(() => this.actions$.pipe(
     ofType(AiActions.loadAllAis),
     exhaustMap(() => this.aiApiService.getAllApis().pipe(
-      map((ais) => AiAPIActions.loadAllSuccess({ ai:ais }))
+      map((ais) => AiAPIActions.loadAllSuccess({ ais }))
     ))
   ));
   createAi$ = createEffect(() => this.actions$.pipe(

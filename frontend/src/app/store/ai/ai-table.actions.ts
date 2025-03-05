@@ -9,5 +9,6 @@ export const AiActions = createActionGroup({
     'Add Ai': props<{ai:NewAi}>(),
     'Remove Ai': props<{ai:Ai}>(),
     'Load all ais': emptyProps(),
+
   }
 });

@@ -21,6 +21,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AiService } from '../../services/ai.service';
 import { Ai } from '../../models/ai.model';
 import { NewAi } from '../../models/new-ai.model';
+import { Observable } from 'rxjs';
 
 interface Column {
     field: string;
@@ -55,27 +56,49 @@ interface ExportColumn {
         InputIconModule,
         IconFieldModule,
         ConfirmDialogModule,
-
     ],
     template: `
         <p-toolbar styleClass="mb-6">
             <ng-template #start>
-                <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
-                <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
+                <p-button
+                    label="New"
+                    icon="pi pi-plus"
+                    severity="secondary"
+                    class="mr-2"
+                    (onClick)="openNew()"
+                />
+                <p-button
+                    severity="secondary"
+                    label="Delete"
+                    icon="pi pi-trash"
+                    outlined
+                    (onClick)="deleteSelectedProducts()"
+                    [disabled]="!selectedProducts || !selectedProducts.length"
+                />
             </ng-template>
 
             <ng-template #end>
-                <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+                <p-button
+                    label="Export"
+                    icon="pi pi-upload"
+                    severity="secondary"
+                    (onClick)="exportCSV()"
+                />
             </ng-template>
         </p-toolbar>
 
         <p-table
             #dt
-            [value]="products()"
+            [value]="ais()"
             [rows]="10"
             [columns]="cols"
             [paginator]="true"
-            [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+            [globalFilterFields]="[
+                'name',
+                'country.name',
+                'representative.name',
+                'status',
+            ]"
             [tableStyle]="{ 'min-width': '75rem' }"
             [(selection)]="selectedProducts"
             [rowHover]="true"
@@ -89,7 +112,12 @@ interface ExportColumn {
                     <h5 class="m-0">Manage my AIs</h5>
                     <p-iconfield>
                         <p-inputicon styleClass="pi pi-search" />
-                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="onGlobalFilter(dt, $event)"
+                            placeholder="Search..."
+                        />
                     </p-iconfield>
                 </div>
             </ng-template>
@@ -120,50 +148,111 @@ interface ExportColumn {
 
                     <td>{{ product.url }}</td>
                     <td>
-                        <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct(product)" />
-                        <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(product)" />
+                        <p-button
+                            icon="pi pi-pencil"
+                            class="mr-2"
+                            [rounded]="true"
+                            [outlined]="true"
+                            (click)="editProduct(product)"
+                        />
+                        <p-button
+                            icon="pi pi-trash"
+                            severity="danger"
+                            [rounded]="true"
+                            [outlined]="true"
+                            (click)="deleteProduct(product)"
+                        />
                     </td>
                 </tr>
             </ng-template>
         </p-table>
 
-        <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Ai Details" [modal]="true">
+        <p-dialog
+            [(visible)]="productDialog"
+            [style]="{ width: '450px' }"
+            header="Ai Details"
+            [modal]="true"
+        >
             <ng-template #content>
                 <div class="flex flex-col gap-6">
                     <div>
-                        <label for="model" class="block font-bold mb-3">Name</label>
-                        <input type="text" pInputText id="model" [(ngModel)]="product.model" required autofocus fluid />
-                        <small class="text-red-500" *ngIf="submitted && !product.model">Name is required.</small>
+                        <label for="model" class="block font-bold mb-3"
+                            >Name</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            id="model"
+                            [(ngModel)]="product.model"
+                            required
+                            autofocus
+                            fluid
+                        />
+                        <small
+                            class="text-red-500"
+                            *ngIf="submitted && !product.model"
+                            >Name is required.</small
+                        >
                     </div>
 
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-6">
-                            <label for="url" class="block font-bold mb-3">Url</label>
-                            <input type="text" pInputText id="url" [(ngModel)]="product.url" required autofocus fluid />
+                            <label for="url" class="block font-bold mb-3"
+                                >Url</label
+                            >
+                            <input
+                                type="text"
+                                pInputText
+                                id="url"
+                                [(ngModel)]="product.url"
+                                required
+                                autofocus
+                                fluid
+                            />
                         </div>
                         <div class="col-span-6">
-                            <label for="key" class="block font-bold mb-3">Key</label>
-                            <input type="text" pInputText id="key" [(ngModel)]="product.key" required autofocus fluid />
+                            <label for="key" class="block font-bold mb-3"
+                                >Key</label
+                            >
+                            <input
+                                type="text"
+                                pInputText
+                                id="key"
+                                [(ngModel)]="product.key"
+                                required
+                                autofocus
+                                fluid
+                            />
                         </div>
                     </div>
                 </div>
             </ng-template>
 
             <ng-template #footer>
-                <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-                <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
+                <p-button
+                    label="Cancel"
+                    icon="pi pi-times"
+                    text
+                    (click)="hideDialog()"
+                />
+                <p-button
+                    label="Save"
+                    icon="pi pi-check"
+                    (click)="saveProduct()"
+                />
             </ng-template>
         </p-dialog>
 
         <p-confirmdialog [style]="{ width: '450px' }" />
     `,
-    providers: [MessageService, AiService, ConfirmationService]
+    providers: [MessageService, AiService, ConfirmationService],
 })
 export class Crud implements OnInit {
+    ais;
+
     productDialog: boolean = false;
 
-    products = signal<Ai[]>([]);
-
+    // products = signal<Ai[]>([]);
     product!: NewAi;
 
     selectedProducts!: Ai[] | null;
@@ -181,8 +270,10 @@ export class Crud implements OnInit {
     constructor(
         private aiService: AiService,
         private messageService: MessageService,
-        private confirmationService: ConfirmationService
-    ) {}
+        private confirmationService: ConfirmationService,
+    ) {
+        this.ais = this.aiService.ais;
+    }
 
     exportCSV() {
         this.dt.exportCSV();
@@ -193,36 +284,36 @@ export class Crud implements OnInit {
     }
 
     loadDemoData() {
-        console.log("loading demo data")
-        this.aiService.getAllAis().subscribe((data: Ai[]) => {
-            this.products.set(data);
-        });
-
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
+        console.log('loading demo data');
+        this.aiService.getAllAis()
 
         this.cols = [
-            { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
+            {
+                field: 'code',
+                header: 'Code',
+                customExportHeader: 'Product Code',
+            },
             { field: 'name', header: 'Name' },
             { field: 'image', header: 'Image' },
             { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' }
+            { field: 'category', header: 'Category' },
         ];
 
-        this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+        this.exportColumns = this.cols.map((col) => ({
+            title: col.header,
+            dataKey: col.field,
+        }));
     }
 
     onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+        table.filterGlobal(
+            (event.target as HTMLInputElement).value,
+            'contains',
+        );
     }
 
     openNew() {
-        this.product = {key:'',ownerId:1,
-            url: '',
-            model: ''};
+        this.product = { key: '', ownerId: 1, url: '', model: '' };
         this.submitted = false;
         this.productDialog = true;
     }
@@ -238,15 +329,19 @@ export class Crud implements OnInit {
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.products.set(this.products().filter((val) => !this.selectedProducts?.includes(val)));
-                this.selectedProducts = null;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Products Deleted',
-                    life: 3000
-                });
-            }
+                // this.products.set(
+                //     this.products().filter(
+                //         (val) => !this.selectedProducts?.includes(val),
+                //     ),
+                // );
+                // this.selectedProducts = null;
+                // this.messageService.add({
+                //     severity: 'success',
+                //     summary: 'Successful',
+                //     detail: 'Products Deleted',
+                //     life: 3000,
+                // });
+            },
         });
     }
 
@@ -255,76 +350,30 @@ export class Crud implements OnInit {
         this.submitted = false;
     }
 
-    deleteProduct(product: Ai) {
+    deleteProduct(ai: Ai) {
         this.confirmationService.confirm({
-            message: 'Are you sure you want to delete ' + product.model + '?',
+            message: `Are you sure you want to delete ${ai.model}?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.products.set(this.products().filter((val) => val.id !== product.id));
-                this.product = {key:'',ownerId:1,
-                    url: '',
-                    model: ''};
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Deleted',
-                    life: 3000
-                });
+                this.aiService.removeAi(ai)
             }
-        });
-    }
-
-    findIndexById(id: number): number {
-        let index = -1;
-        for (let i = 0; i < this.products().length; i++) {
-            if (this.products()[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
-
-    createId(): number {
-        return Math.floor(10000 + Math.random() * 90000); // Generates a 5-digit random number
-    }
-
-    getSeverity(status: string) {
-        switch (status) {
-            case 'INSTOCK':
-                return 'success';
-            case 'LOWSTOCK':
-                return 'warn';
-            case 'OUTOFSTOCK':
-                return 'danger';
-            default:
-                return 'info';
-        }
+          });
     }
 
     saveProduct() {
         this.submitted = true;
-        let _products = this.products();
 
         this.messageService.add({
             severity: 'success',
             summary: 'Successful',
             detail: 'Product Created',
-            life: 3000
+            life: 3000,
         });
-                // this.products.set([..._products, this.product]);
+        // this.products.set([..._products, this.product]);
         this.aiService.addAi(this.product);
-                // .subscribe((data: Ai[]) => {
-                //     this.products.set(data);
-                // });
 
-
-            this.productDialog = false;
-            this.product = {key:'',ownerId:1,
-                url: '',
-                model: ''};
-
+        this.productDialog = false;
+        this.product = { key: '', ownerId: 1, url: '', model: '' };
     }
 }

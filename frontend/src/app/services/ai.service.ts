@@ -15,7 +15,7 @@ export class AiService {
     private store = inject(Store);
     private http = inject(HttpClient);
 
-    ais$: Observable<Ai[]> = this.store.select(selectAis);
+    ais = this.store.selectSignal(selectAis);
 
     addAi(ai: NewAi): void {
          this.store.dispatch(AiActions.addAi({ ai }));
@@ -25,7 +25,7 @@ export class AiService {
     removeAi(ai: Ai): void {
         this.store.dispatch(AiActions.removeAi({ ai }));
     }
-    getAllAis(): Observable<Ai[]> {
-        return this.http.get<Ai[]>('https://localhost:7214/ai');
+    getAllAis(): void {
+        this.store.dispatch(AiActions.loadAllAis());
     }
 }
