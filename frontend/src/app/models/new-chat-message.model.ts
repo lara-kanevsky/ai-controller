@@ -5,11 +5,11 @@ export class NewChatMessage {
     chatId:number;
     senderType:number;
 
-    constructor(userId:number, content: string,  timestamp: Date,chatId:number) {
+    constructor(userId:number, content: string,  timestamp: Date,chatId:number,senderType:number) {
         this.senderId = userId;
         this.content = content;
         this.timestamp = timestamp || new Date();
         this.chatId = chatId;
-        this.senderType = 1;
+        this.senderType = senderType;
     }
 }

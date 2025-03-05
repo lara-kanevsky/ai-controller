@@ -131,22 +131,19 @@ interface ExportColumn {
             <ng-template #content>
                 <div class="flex flex-col gap-6">
                     <div>
-                        <label for="name" class="block font-bold mb-3">Name</label>
-                        <input type="text" pInputText id="name" [(ngModel)]="product.model" required autofocus fluid />
+                        <label for="model" class="block font-bold mb-3">Name</label>
+                        <input type="text" pInputText id="model" [(ngModel)]="product.model" required autofocus fluid />
                         <small class="text-red-500" *ngIf="submitted && !product.model">Name is required.</small>
                     </div>
 
-
-
-
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-6">
-                            <label for="price" class="block font-bold mb-3">Url</label>
-                            <input type="text" pInputText id="name" [(ngModel)]="product.model" required autofocus fluid />
+                            <label for="url" class="block font-bold mb-3">Url</label>
+                            <input type="text" pInputText id="url" [(ngModel)]="product.url" required autofocus fluid />
                         </div>
                         <div class="col-span-6">
-                            <label for="quantity" class="block font-bold mb-3">Token</label>
-                            <input type="text" pInputText id="name" [(ngModel)]="product.model" required autofocus fluid />
+                            <label for="key" class="block font-bold mb-3">Key</label>
+                            <input type="text" pInputText id="key" [(ngModel)]="product.key" required autofocus fluid />
                         </div>
                     </div>
                 </div>
@@ -223,7 +220,7 @@ export class Crud implements OnInit {
     }
 
     openNew() {
-        this.product = {key:"ola",ownerId:1,
+        this.product = {key:'',ownerId:1,
             url: '',
             model: ''};
         this.submitted = false;
@@ -265,7 +262,7 @@ export class Crud implements OnInit {
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
                 this.products.set(this.products().filter((val) => val.id !== product.id));
-                this.product = {key:"ola",ownerId:1,
+                this.product = {key:'',ownerId:1,
                     url: '',
                     model: ''};
                 this.messageService.add({
@@ -325,7 +322,7 @@ export class Crud implements OnInit {
 
 
             this.productDialog = false;
-            this.product = {key:"ola",ownerId:1,
+            this.product = {key:'',ownerId:1,
                 url: '',
                 model: ''};
 

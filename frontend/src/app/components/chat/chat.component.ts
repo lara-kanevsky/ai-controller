@@ -6,6 +6,7 @@ import { ChatService } from '../../services/chat2.service';
 import { ChatMessageComponent } from '../chat-message/chat-message.component';
 import { ShowChatMessage } from '../../models/show-chat-message.model';
 import { NewChatMessage } from '../../models/new-chat-message.model';
+import { GroqApiService } from '../../api/groq-api.service';
 
 @Component({
   selector: 'app-chat',
@@ -19,20 +20,35 @@ export class ChatComponent implements OnInit, OnDestroy {
   messages = signal<ShowChatMessage[]>([]);
   isLoading = signal<boolean>(false);
   error = signal<string | null>(null);
-
+response = ''
   chatForm: FormGroup;
   private destroy$ = new Subject<void>();
 
   private fb = inject(FormBuilder);
   private chatService = inject(ChatService);
-
-  constructor() {
+  constructor(private groqService: GroqApiService) {
     this.chatForm = this.fb.group({
       textContent: ['', [Validators.required, Validators.minLength(1)]],
       images: [null]
     });
   }
-
+  askGroq(message:string) {
+    this.groqService.generateResponse(message).subscribe(
+      (res) => {
+        // this.response = res.choices[0].message.content; // Extract response
+        this.chatService.createMessage({
+            senderId: 1,
+            content: res.choices[0].message.content,
+            timestamp: new Date(),
+            chatId: 1,
+            senderType:2
+          });
+      },
+      (error) => {
+        console.error('Error:', error);
+      }
+    );
+  }
   ngOnInit(): void {
     this.loadMessages();
 
@@ -93,6 +109,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     // Dispatch action to create a message
     // The response and loading states will be handled by the subscriptions in ngOnInit
     this.chatService.createMessage(newMessage);
+    this.askGroq(newMessage.content);
 
     // Reset the form after dispatching the action
     this.chatForm.reset();
