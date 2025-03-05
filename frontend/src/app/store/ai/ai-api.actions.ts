@@ -7,5 +7,7 @@ export const AiAPIActions = createActionGroup({
     // Load all messages
     'Load all success': props<{ai:Ai[]}>(),
     'Load all fail': props<{ai:Ai}>(),
+    'Save success': props<{ai:Ai}>(),
+
   }
 });

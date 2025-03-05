@@ -26,7 +26,7 @@ export class AiTableComponent {
   constructor(private aiService: AiService) {}
 
   addRandomAi() {
-    const newAi: Ai = { id: Math.random(), model: 'AI-' + Date.now(),url:"urlsito" };
+    const newAi: Ai = { id: Math.random(), model: 'AI-' + Date.now(),url:"urlsito" ,ownerId:1,key:"ola",};
     this.aiService.addAi(newAi);
   }
 

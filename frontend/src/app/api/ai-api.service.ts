@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ai } from '../models/ai.model';
+import { NewAi } from '../models/new-ai.model';
 
 @Injectable({
     providedIn: 'root',
@@ -19,12 +20,12 @@ export class AiApiService {
         return this.http.get<Ai>(`${this.apiUrl}/${id}`);
     }
 
-    createChatMessage(
-        chatMessage: Ai,
+    createAi(
+        ai: NewAi,
     ): Observable<Ai> {
         return this.http.post<Ai>(
             this.apiUrl,
-            chatMessage,
+            ai,
             this.getHttpOptions(),
         );
     }

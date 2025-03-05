@@ -20,6 +20,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AiService } from '../../services/ai.service';
 import { Ai } from '../../models/ai.model';
+import { NewAi } from '../../models/new-ai.model';
 
 interface Column {
     field: string;
@@ -166,7 +167,7 @@ export class Crud implements OnInit {
 
     products = signal<Ai[]>([]);
 
-    product!: Ai;
+    product!: NewAi;
 
     selectedProducts!: Ai[] | null;
 
@@ -222,7 +223,7 @@ export class Crud implements OnInit {
     }
 
     openNew() {
-        this.product = { id: -1,
+        this.product = {key:"ola",ownerId:1,
             url: '',
             model: ''};
         this.submitted = false;
@@ -264,7 +265,7 @@ export class Crud implements OnInit {
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
                 this.products.set(this.products().filter((val) => val.id !== product.id));
-                this.product = { id: -1,
+                this.product = {key:"ola",ownerId:1,
                     url: '',
                     model: ''};
                 this.messageService.add({
@@ -309,31 +310,24 @@ export class Crud implements OnInit {
     saveProduct() {
         this.submitted = true;
         let _products = this.products();
-        if (this.product.model?.trim()) {
-            if (this.product.id) {
-                _products[this.findIndexById(this.product.id)] = this.product;
-                this.products.set([..._products]);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Updated',
-                    life: 3000
-                });
-            } else {
-                this.product.id = this.createId();
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Created',
-                    life: 3000
-                });
-                this.products.set([..._products, this.product]);
-            }
+
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Product Created',
+            life: 3000
+        });
+                // this.products.set([..._products, this.product]);
+        this.aiService.addAi(this.product);
+                // .subscribe((data: Ai[]) => {
+                //     this.products.set(data);
+                // });
+
 
             this.productDialog = false;
-            this.product = {id: -1,
+            this.product = {key:"ola",ownerId:1,
                 url: '',
                 model: ''};
-        }
+
     }
 }

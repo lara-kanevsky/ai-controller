@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { AiActions } from './ai-table.actions';
 import { Ai } from '../../models/ai.model';
+import { AiAPIActions } from './ai-api.actions';
 
 export const aiFeatureKey = "ai";
 
@@ -15,8 +16,8 @@ export const initialState: AiState = {
 
 export const aiReducer = createReducer(
   initialState,
-  on(AiActions.addAi, (currentState,action) => ({
-    ais:[...currentState.ais,action.ai]
+  on(AiAPIActions.saveSuccess, (state, action) => ({
+    ais: [...state.ais, action.ai], // Add the created Ai to the state
   })),
   on(AiActions.removeAi, (currentState,action) => ({
     ...currentState,
