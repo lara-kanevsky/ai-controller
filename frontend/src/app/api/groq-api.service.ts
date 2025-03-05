@@ -11,18 +11,18 @@ export class GroqApiService {
 
   constructor(private http: HttpClient) {}
 
-  generateResponse(prompt: string): Observable<any> {
+  generateResponse(prompt: string,model:string,url:string,key:string): Observable<any> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.apiKey}`,
+      'Authorization': `Bearer ${key}`,
       'Content-Type': 'application/json'
     });
 
     const body = {
-      model: 'deepseek-r1-distill-qwen-32b', // Change to the correct Groq model
+      model: model, // Change to the correct Groq model
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 100
     };
 
-    return this.http.post(this.apiUrl, body, { headers });
+    return this.http.post(url, body, { headers });
   }
 }

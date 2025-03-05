@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, OnDestroy, signal, inject, DestroyRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { ChatService } from '../../services/chat2.service';
@@ -7,25 +7,42 @@ import { ChatMessageComponent } from '../chat-message/chat-message.component';
 import { ShowChatMessage } from '../../models/show-chat-message.model';
 import { NewChatMessage } from '../../models/new-chat-message.model';
 import { GroqApiService } from '../../api/groq-api.service';
+import { SelectModule } from 'primeng/select';
+import {  ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { AiService } from '../../services/ai.service';
+import { Ai } from '../../models/ai.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [ChatMessageComponent, ReactiveFormsModule, CommonModule],
+  imports: [ChatMessageComponent, ReactiveFormsModule, CommonModule,SelectModule,FormsModule ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
 export class ChatComponent implements OnInit, OnDestroy {
+    private destroyRef = inject(DestroyRef);
   // Use signals for reactive state
   messages = signal<ShowChatMessage[]>([]);
   isLoading = signal<boolean>(false);
   error = signal<string | null>(null);
-response = ''
+  dropdownValues=signal<Ai[]>([]);
+  dropdownValue=signal<Ai>({
+    id: 0,
+    url: '',
+    model: 'Select model',
+    key:'',
+    ownerId:1
+  });
+
+  response = signal<string | null>(null);
   chatForm: FormGroup;
   private destroy$ = new Subject<void>();
 
   private fb = inject(FormBuilder);
   private chatService = inject(ChatService);
+  private aiService = inject(AiService);
+
   constructor(private groqService: GroqApiService) {
     this.chatForm = this.fb.group({
       textContent: ['', [Validators.required, Validators.minLength(1)]],
@@ -33,25 +50,34 @@ response = ''
     });
   }
   askGroq(message:string) {
-    this.groqService.generateResponse(message).subscribe(
-      (res) => {
-        // this.response = res.choices[0].message.content; // Extract response
-        this.chatService.createMessage({
+    console.log("in ask grok")
+    console.log(this.dropdownValue()?.url)
+
+    this.groqService.generateResponse(
+        message,
+        this.dropdownValue()?.model,
+        this.dropdownValue()?.url,
+        this.dropdownValue()?.key
+      ).pipe(
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
+        next: (res) => {
+          // If you want to use a signal to track the response
+          this.response.set(res.choices[0].message.content);
+
+          this.chatService.createMessage({
             senderId: 1,
             content: res.choices[0].message.content,
             timestamp: new Date(),
             chatId: 1,
-            senderType:2
+            senderType: 2
           });
-      },
-      (error) => {
-        console.error('Error:', error);
-      }
-    );
+        }
+      });
   }
   ngOnInit(): void {
     this.loadMessages();
-
+    this.aiService.getAllAis().subscribe(ai=>{this.dropdownValues.set(ai)})
     // Subscribe to messages from the store
     this.chatService.messages$
       .pipe(takeUntil(this.destroy$))
@@ -120,9 +146,20 @@ response = ''
   }
 
   trackByMessageId(index: number, message: ShowChatMessage): number {
-    console.log("elmsj:")
-    console.log(message)
 
     return message.id;
   }
+  @ViewChild('messageContainer') messageContainer!: ElementRef;
+
+ngAfterViewChecked() {
+  this.scrollToBottom();
+}
+updateDropdownValue(value: Ai) {
+    this.dropdownValue.set(value);
+  }
+scrollToBottom() {
+  try {
+    this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+  } catch(err) {}
+}
 }
