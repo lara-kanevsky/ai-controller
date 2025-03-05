@@ -53,7 +53,8 @@ interface ExportColumn {
         TagModule,
         InputIconModule,
         IconFieldModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+
     ],
     template: `
         <p-toolbar styleClass="mb-6">
@@ -125,7 +126,7 @@ interface ExportColumn {
             </ng-template>
         </p-table>
 
-        <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true">
+        <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Ai Details" [modal]="true">
             <ng-template #content>
                 <div class="flex flex-col gap-6">
                     <div>
@@ -137,9 +138,16 @@ interface ExportColumn {
 
 
 
-
-
-
+                    <div class="grid grid-cols-12 gap-4">
+                        <div class="col-span-6">
+                            <label for="price" class="block font-bold mb-3">Url</label>
+                            <input type="text" pInputText id="name" [(ngModel)]="product.model" required autofocus fluid />
+                        </div>
+                        <div class="col-span-6">
+                            <label for="quantity" class="block font-bold mb-3">Token</label>
+                            <input type="text" pInputText id="name" [(ngModel)]="product.model" required autofocus fluid />
+                        </div>
+                    </div>
                 </div>
             </ng-template>
 

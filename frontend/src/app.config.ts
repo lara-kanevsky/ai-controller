@@ -9,6 +9,7 @@ import { ChatEffects } from './app/store/chat/chat.effects';
 import { routes } from './app.routes';
 import { aiFeatureKey, aiReducer } from './app/store/ai/ai.reducer';
 import { AiEffects } from './app/store/ai/ai.effects';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools({
       maxAge: 25,
       logOnly: false
-    })
+    }),
+    provideAnimations(),
   ]
 };
