@@ -7,13 +7,15 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { chatReducer, chatFeatureKey } from './app/store/chat/chat.reducer';
 import { ChatEffects } from './app/store/chat/chat.effects';
 import { routes } from './app.routes';
+import { aiFeatureKey, aiReducer } from './app/store/ai/ai.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     provideStore({
-      [chatFeatureKey]: chatReducer
+      [chatFeatureKey]: chatReducer,
+      [aiFeatureKey]: aiReducer
     }),
     provideEffects([ChatEffects]),
     provideStoreDevtools({
