@@ -25,6 +25,20 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    // Example: Configure Kestrel to listen on HTTP and HTTPS ports
+    options.ListenAnyIP(5186);  // HTTP on port 5186
+    options.ListenAnyIP(7214, listenOptions =>
+    {
+        listenOptions.UseHttps();  // HTTPS on port 7214
+    });
+
+    // Optional: Configure additional Kestrel settings here, like timeouts, limits, etc.
+    // options.Limits.MaxRequestBodySize = 10 * 1024; // Example for limiting request body size (in bytes)
+});
+
+
 var app = builder.Build();
 app.UseCors("AllowAngularApp");
 
