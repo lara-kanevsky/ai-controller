@@ -1,5 +1,4 @@
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
-import { Ai } from "../../models/ai.model";
 import { NewAi } from "../../models/new-ai.model";
 
 export const AiActions = createActionGroup({

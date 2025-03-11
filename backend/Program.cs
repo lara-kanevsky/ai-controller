@@ -1,6 +1,7 @@
 using BackendEvoltis.Endpoints;
 using BackendEvoltis.Entities;
 using BackendEvoltis.Repositories;
+using BackendEvoltis.Services;
 using EvoltisBackend.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,8 @@ builder.Services.AddDbContext<ProductDbContext>(options => options.UseMySQL(buil
 builder.Services.AddScoped<ChatMessageRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IAiService, AiService>();
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -52,7 +55,7 @@ app.UseHttpsRedirection();
 //app.MapProductEndpoints();
 app.MapRepositoryEndpoints<Chat>("chat");
 app.MapRepositoryEndpoints<User>("user");
-app.MapRepositoryEndpoints<Ai>("ai");
+app.MapAiEndpoints();
 
 
 app.MapChatMessageEndpoints();

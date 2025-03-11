@@ -6,9 +6,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GroqApiService {
-  private apiUrl = 'https://api.groq.com/openai/v1/chat/completions'; // Groq API endpoint
-  private apiKey = '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'; // Store in env files in production
-
   constructor(private http: HttpClient) {}
 
   generateResponse(prompt: string,model:string,url:string,key:string): Observable<any> {
