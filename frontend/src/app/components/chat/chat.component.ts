@@ -77,7 +77,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.loadMessages();
-    this.aiService.getAllAis().subscribe(ai=>{this.dropdownValues.set(ai)})
+    // this.aiService.getAllAis().subscribe(ai=>{this.dropdownValues.set(ai)})
     // Subscribe to messages from the store
     this.chatService.messages$
       .pipe(takeUntil(this.destroy$))

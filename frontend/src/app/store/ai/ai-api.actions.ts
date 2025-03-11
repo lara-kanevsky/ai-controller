@@ -4,7 +4,7 @@ import { Ai } from "../../models/ai.model";
 export const AiAPIActions = createActionGroup({
   source: 'Ai API',
   events: {
-    'Load all success': props<{ai:Ai[]}>(),
+    'Load all success': props<{ais:Ai[]}>(),
     'Load all fail': props<{ai:Ai}>(),
     'Save success': props<{ai:Ai}>(),
     'Delete success': props<{ai:Ai}>(),

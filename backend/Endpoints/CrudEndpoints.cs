@@ -9,6 +9,11 @@ namespace BackendEvoltis.Endpoints
         {
             var repositoryGroup = app.MapGroup(baseRoute);
 
+            MapRepositoryEndpoints<TEntity>(repositoryGroup);
+        }
+
+        public static void MapRepositoryEndpoints<TEntity>(RouteGroupBuilder repositoryGroup) where TEntity : Entity
+        {
             repositoryGroup.MapGet("/", async (IRepository<TEntity> repository, CancellationToken cancellationToken) =>
             {
                 var entities = await repository.GetAllAsync(cancellationToken);
@@ -24,7 +29,7 @@ namespace BackendEvoltis.Endpoints
             repositoryGroup.MapPost("/", async (IRepository<TEntity> repository, TEntity entity, CancellationToken cancellationToken) =>
             {
                 await repository.AddAsync(entity, cancellationToken);
-                return Results.Created($"/{baseRoute}/{entity}", entity);
+                return Results.Created($"/{entity.Id}", entity);
             });
 
             repositoryGroup.MapPut("/{id}", async (IRepository<TEntity> repository, int id, TEntity updatedEntity, CancellationToken cancellationToken) =>

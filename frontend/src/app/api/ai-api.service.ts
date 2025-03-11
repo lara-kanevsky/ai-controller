@@ -23,6 +23,7 @@ export class AiApiService {
     createAi(
         ai: NewAi,
     ): Observable<Ai> {
+        console.log("using ai:"+ai.model+ai.url)
         return this.http.post<Ai>(
             this.apiUrl,
             ai,

@@ -5,7 +5,7 @@ export const AiActions = createActionGroup({
   source: 'Ai table',
   events: {
     // Load all messages
-    'Add Ai': props<{ai:NewAi}>(),
+    'Add Ai': props<{newAi:NewAi}>(),
     'Remove Ai': props<{id:number}>(),
     'Load all ais': emptyProps(),
   }

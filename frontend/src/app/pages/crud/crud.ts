@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, OnInit, Signal, signal, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table, TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AiService } from '../../services/ai.service';
 import { Ai } from '../../models/ai.model';
 import { NewAi } from '../../models/new-ai.model';
+import { defaultIfEmpty, map, Observable } from 'rxjs';
+
 
 interface Column {
     field: string;
@@ -57,11 +59,12 @@ interface ExportColumn {
         ConfirmDialogModule,
 
     ],
+                    // <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
+
     template: `
         <p-toolbar styleClass="mb-6">
             <ng-template #start>
                 <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
-                <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
             </ng-template>
 
             <ng-template #end>
@@ -71,7 +74,7 @@ interface ExportColumn {
 
         <p-table
             #dt
-            [value]="products()"
+            [value]="(ais$ | async) || []" 
             [rows]="10"
             [columns]="cols"
             [paginator]="true"
@@ -160,6 +163,8 @@ interface ExportColumn {
     providers: [MessageService, AiService, ConfirmationService]
 })
 export class Crud implements OnInit {
+    ais$: Observable<Ai[]> = this.aiService.ais$;
+
     productDialog: boolean = false;
 
     products = signal<Ai[]>([]);
@@ -177,12 +182,17 @@ export class Crud implements OnInit {
     exportColumns!: ExportColumn[];
 
     cols!: Column[];
-
+    aisArray: Ai[] = [];
     constructor(
         private aiService: AiService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService
-    ) { }
+    ) {
+        this.ais$ = this.aiService.ais$.pipe(
+            defaultIfEmpty([]) // Emit an empty array if ais$ is null or undefined
+          );
+          
+     }
 
     exportCSV() {
         this.dt.exportCSV();
@@ -194,15 +204,7 @@ export class Crud implements OnInit {
 
     loadDemoData() {
         console.log("loading demo data")
-        this.aiService.getAllAis().subscribe((data: Ai[]) => {
-            this.products.set(data);
-        });
-
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
+        this.aiService.getAllAis()
 
         this.cols = [
             { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
@@ -234,23 +236,23 @@ export class Crud implements OnInit {
         this.productDialog = true;
     }
 
-    deleteSelectedProducts() {
-        this.confirmationService.confirm({
-            message: 'Are you sure you want to delete the selected products?',
-            header: 'Confirm',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                this.products.set(this.products().filter((val) => !this.selectedProducts?.includes(val)));
-                this.selectedProducts = null;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Products Deleted',
-                    life: 3000
-                });
-            }
-        });
-    }
+    // deleteSelectedProducts() {
+    //     this.confirmationService.confirm({
+    //         message: 'Are you sure you want to delete the selected products?',
+    //         header: 'Confirm',
+    //         icon: 'pi pi-exclamation-triangle',
+    //         accept: () => {
+    //             this.products.set(this.products().filter((val) => !this.selectedProducts?.includes(val)));
+    //             this.selectedProducts = null;
+    //             this.messageService.add({
+    //                 severity: 'success',
+    //                 summary: 'Successful',
+    //                 detail: 'Products Deleted',
+    //                 life: 3000
+    //             });
+    //         }
+    //     });
+    // }
 
     hideDialog() {
         this.productDialog = false;
@@ -263,8 +265,8 @@ export class Crud implements OnInit {
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.products.set(this.products().filter((val) => val.id !== product.id));
-                console.log("deletinf"+product.id)
+                // this.products.set(this.products().filter((val) => val.id !== product.id));
+                // console.log("deletinf"+product.id)
                 this.aiService.removeAi(product.id);
 
                 // this.product = {id:-1,
@@ -282,18 +284,22 @@ export class Crud implements OnInit {
         });
     }
 
-    findIndexById(id: number): number {
-        let index = -1;
-        for (let i = 0; i < this.products().length; i++) {
-            if (this.products()[i].id === id) {
-                index = i;
-                break;
+    findIndexById(id: number): Observable<number> {
+        return this.ais$.pipe(
+          map(ais => {
+            if (!ais) return -1;
+            
+            for (let i = 0; i < ais.length; i++) {
+              if (ais[i].id === id) {
+                return i;
+              }
             }
-        }
-
-        return index;
-    }
-
+            
+            return -1;
+          })
+        );
+      }
+      
     createId(): number {
         return Math.floor(10000 + Math.random() * 90000); // Generates a 5-digit random number
     }
@@ -324,11 +330,11 @@ export class Crud implements OnInit {
         this.aiService.addAi(this.product);
 
         this.productDialog = false;
-        this.product = {id:-1,
-            key: '', ownerId: 1,
-            url: '',
-            model: ''
-        };
+        // this.product = {id:-1,
+        //     key: '', ownerId: 1,
+        //     url: '',
+        //     model: ''
+        // };
 
     }
 }

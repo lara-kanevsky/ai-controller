@@ -11,9 +11,11 @@ namespace BackendEvoltis.Endpoints
     {
         public static void MapAiEndpoints(this IEndpointRouteBuilder app)
         {
-            var chatGroup = app.MapGroup("ai");
+            var aiGroup = app.MapGroup("ai");
 
-            chatGroup.MapPost("/verify-ai", async (IMapper mapper,
+            CrudEndpoints.MapRepositoryEndpoints<Ai>(aiGroup);
+            
+            aiGroup.MapPost("/verify-ai", async (IMapper mapper,
                                                   IAiService aiService,
                                                   IRepository<Ai> aiRepository,
                                                   int aiId,
@@ -30,7 +32,7 @@ namespace BackendEvoltis.Endpoints
             });
 
             // For sending a prompt to an AI
-            chatGroup.MapPost("/send-prompt", async (IMapper mapper,
+            aiGroup.MapPost("/send-prompt", async (IMapper mapper,
                                                     IAiService aiService,
                                                     IRepository<Ai> aiRepository,
                                                     PromptRequest request,

@@ -19,6 +19,9 @@ export const aiReducer = createReducer(
   on(AiAPIActions.saveSuccess, (state, action) => ({
     ais: [...state.ais, action.ai],
   })),
+  on(AiAPIActions.loadAllSuccess, (state, action) => ({
+    ais: [... action.ais],
+  })),
   on(AiActions.removeAi, (currentState, action) => ({
     ...currentState,
     ais: currentState.ais.filter(ai => ai.id !== action.id)

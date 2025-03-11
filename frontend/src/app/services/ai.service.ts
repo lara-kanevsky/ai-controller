@@ -17,15 +17,19 @@ export class AiService {
 
     ais$: Observable<Ai[]> = this.store.select(selectAis);
 
-    addAi(ai: NewAi): void {
-         this.store.dispatch(AiActions.addAi({ ai }));
+    addAi(ai: Ai): void {
+        const { id, ...newAiProperties } = ai;
+        let newAi =  new NewAi(newAiProperties.key, newAiProperties.ownerId, newAiProperties.url, newAiProperties.model);
+    
+        this.store.dispatch(AiActions.addAi({ newAi }));
 
     }
 
     removeAi(id: number): void {
         this.store.dispatch(AiActions.removeAi({ id }));
     }
-    getAllAis(): Observable<Ai[]> {
-        return this.http.get<Ai[]>('https://localhost:7214/ai');
+
+    getAllAis(): void {
+        this.store.dispatch(AiActions.loadAllAis());
     }
 }
