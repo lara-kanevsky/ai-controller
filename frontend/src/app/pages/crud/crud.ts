@@ -110,7 +110,10 @@ interface ExportColumn {
                         Url
                         <p-sortIcon field="url" />
                     </th>
-
+<th pSortableColumn="isActive" style="min-width:16rem">
+                        Is active
+                        <p-sortIcon field="isActive" />
+                    </th>
                     <th style="min-width: 12rem"></th>
                 </tr>
             </ng-template>
@@ -122,6 +125,26 @@ interface ExportColumn {
                     <td style="min-width: 16rem">{{ product.model }}</td>
 
                     <td>{{ product.url }}</td>
+<td class="px-4 py-2">
+    <!-- Icon for service status -->
+    <span class="inline-flex items-center">
+        <!-- If active, show green checkmark icon -->
+        <svg *ngIf="product.isActive" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+
+        <!-- If not active, show red error icon -->
+        <div *ngIf="!product.isActive"> 
+        <svg  xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+         </div>
+       
+    </span>
+
+</td>
+
+
                     <td>
                         <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct(product)" />
                         <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(product)" />
@@ -134,9 +157,9 @@ interface ExportColumn {
             <ng-template #content>
                 <div class="flex flex-col gap-6">
                     <div>
-                        <label for="model" class="block font-bold mb-3">Name</label>
+                        <label for="model" class="block font-bold mb-3">Model</label>
                         <input type="text" pInputText id="model" [(ngModel)]="product.model" required autofocus fluid />
-                        <small class="text-red-500" *ngIf="submitted && !product.model">Name is required.</small>
+                        <small class="text-red-500" *ngIf="submitted && !product.model">Model is required.</small>
                     </div>
 
                     <div class="grid grid-cols-12 gap-4">
@@ -229,7 +252,9 @@ export class Crud implements OnInit {
         this.product = {id:-1,
             key: '', ownerId: 1,
             url: '',
-            model: ''
+            model: '',
+            isActive:false,
+            errorMessage:''
         };
         this.submitted = false;
         this.productDialog = true;

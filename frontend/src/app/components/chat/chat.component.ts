@@ -35,7 +35,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     url: '',
     model: 'Select model',
     key:'',
-    ownerId:1
+    ownerId:1,
+    isActive:false,
+    errorMessage:''
   });
 
   response = signal<string | null>(null);

@@ -1,4 +1,4 @@
-export class Ai {
+export class ShowAi {
     id: number;
     url: string;
     model: string;

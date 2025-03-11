@@ -14,7 +14,21 @@ namespace BackendEvoltis.Endpoints
             var aiGroup = app.MapGroup("ai");
 
             CrudEndpoints.MapRepositoryEndpoints<Ai>(aiGroup);
-            
+
+            aiGroup.MapGet("/checked", async (IMapper mapper, IAiService aiService,CancellationToken cancellationToken) =>
+            {
+                var ais = await aiService.GetAllAisAsync(cancellationToken);
+
+                return Results.Ok(ais);
+            });
+
+            aiGroup.MapPost("/checked", async (IMapper mapper, IAiService aiService, Ai newAi,IRepository<Ai> aiRepository, CancellationToken cancellationToken) =>
+            {
+                var createdAi = await aiRepository.AddAsync(newAi,cancellationToken);
+                var showAi = await aiService.GetAiAsync(createdAi.Id,cancellationToken);
+                return Results.Created("",showAi);
+            });
+
             aiGroup.MapPost("/verify-ai", async (IMapper mapper,
                                                   IAiService aiService,
                                                   IRepository<Ai> aiRepository,
@@ -53,6 +67,7 @@ namespace BackendEvoltis.Endpoints
                     return Results.BadRequest(new { error = ex.Message });
                 }
             });
+
         }
     }
 }

@@ -13,9 +13,11 @@ export class AiApiService {
     constructor(private http: HttpClient) {}
 
     getAllAis(): Observable<Ai[]> {
-        return this.http.get<Ai[]>(this.apiUrl);
+        return this.http.get<Ai[]>(this.apiUrl+'/checked');
     }
-
+    getAllCheckedAis(): Observable<Ai[]> {
+        return this.http.get<Ai[]>(this.apiUrl+'/checked');
+    }
     getAiById(id: number): Observable<Ai> {
         return this.http.get<Ai>(`${this.apiUrl}/${id}`);
     }

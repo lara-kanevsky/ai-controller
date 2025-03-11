@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BackendEvoltis.Entities;
+using BackendEvoltis.Repositories;
 using Microsoft.Extensions.Logging;
 
 namespace BackendEvoltis.Services
@@ -13,18 +14,61 @@ namespace BackendEvoltis.Services
     {
         Task<bool> VerifyConnectionAsync(Ai ai);
         Task<string> SendPromptAsync(Ai ai, string prompt, int maxTokens = 100);
+
+        Task<List<ShowAi>> GetAllAisAsync(CancellationToken cancellationToken);
+
+        Task<ShowAi> GetAiAsync(int id, CancellationToken cancellationToken);
+
     }
 
     public class AiService : IAiService
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<AiService> _logger;
+        private readonly IRepository<Ai> _aiRepository;
 
-        public AiService(IHttpClientFactory httpClientFactory, ILogger<AiService> logger)
+
+        public AiService(IHttpClientFactory httpClientFactory, ILogger<AiService> logger, IRepository<Ai> aiRepository)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+            _aiRepository = aiRepository;
         }
+
+        public async Task<List<ShowAi>> GetAllAisAsync(CancellationToken cancellationToken)
+        {
+            var aiList = await _aiRepository.GetAllAsync(cancellationToken);
+
+            var tasks = aiList.Select(async ai =>
+            {
+                return new ShowAi
+                {
+                    Key = ai.Key,
+                    Url = ai.Url,
+                    Model = ai.Model,
+                    OwnerId = ai.OwnerId,
+                    IsActive = await VerifyConnectionAsync(ai) // Await inside object initialization
+                };
+            }).ToList(); // Ensure it's a List<Task<ShowAi>>
+
+            return (await Task.WhenAll(tasks)).ToList();
+        }
+        public async Task<ShowAi> GetAiAsync(int id, CancellationToken cancellationToken)
+        {
+            var ai = await _aiRepository.GetByIdAsync(id, cancellationToken);
+
+            var showAi = new ShowAi
+            {
+                Key = ai.Key,
+                Url = ai.Url,
+                Model = ai.Model,
+                OwnerId = ai.OwnerId,
+                IsActive = await VerifyConnectionAsync(ai)
+            };
+
+            return showAi;
+        }
+
 
         public async Task<bool> VerifyConnectionAsync(Ai ai)
         {
@@ -50,7 +94,7 @@ namespace BackendEvoltis.Services
                 throw new ArgumentException("AI configuration is incomplete. URL, Key, and Model are required.");
 
             var client = _httpClientFactory.CreateClient();
-            
+
             // Configure request headers
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ai.Key);
@@ -73,23 +117,23 @@ namespace BackendEvoltis.Services
             {
                 // Send request to the AI provider
                 var response = await client.PostAsync(ai.Url, content);
-                
+
                 // Ensure we got a success status code
                 response.EnsureSuccessStatusCode();
-                
+
                 // Parse the response
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var responseObject = JsonSerializer.Deserialize<JsonElement>(responseBody);
-                
+
                 // Extract the AI response text (this may need adjustment based on the specific AI provider's response format)
-                if (responseObject.TryGetProperty("choices", out var choices) && 
-                    choices.GetArrayLength() > 0 && 
-                    choices[0].TryGetProperty("message", out var message) && 
+                if (responseObject.TryGetProperty("choices", out var choices) &&
+                    choices.GetArrayLength() > 0 &&
+                    choices[0].TryGetProperty("message", out var message) &&
                     message.TryGetProperty("content", out var content_text))
                 {
                     return content_text.GetString();
                 }
-                
+
                 _logger.LogWarning("Received unexpected response format from AI provider: {Response}", responseBody);
                 return responseBody; // Return the raw response if we couldn't parse it
             }
