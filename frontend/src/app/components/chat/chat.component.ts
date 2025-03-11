@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, signal, inject, DestroyRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { ChatService } from '../../services/chat2.service';
 import { ChatMessageComponent } from '../chat-message/chat-message.component';
 import { ShowChatMessage } from '../../models/show-chat-message.model';
@@ -27,6 +27,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
   error = signal<string | null>(null);
   dropdownValues=signal<Ai[]>([]);
+  private aiService = inject(AiService);
+
+  ais$: Observable<Ai[]> = this.aiService.ais$;
   dropdownValue=signal<Ai>({
     id: 0,
     url: '',
@@ -41,7 +44,6 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   private fb = inject(FormBuilder);
   private chatService = inject(ChatService);
-  private aiService = inject(AiService);
 
   constructor(private groqService: GroqApiService) {
     this.chatForm = this.fb.group({
@@ -77,8 +79,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.loadMessages();
-    // this.aiService.getAllAis().subscribe(ai=>{this.dropdownValues.set(ai)})
-    // Subscribe to messages from the store
+this.aiService.getAllAis()    // Subscribe to messages from the store
     this.chatService.messages$
       .pipe(takeUntil(this.destroy$))
       .subscribe(messages => {
