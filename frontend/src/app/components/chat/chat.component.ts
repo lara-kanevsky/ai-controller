@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, signal, inject, DestroyRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { ChatService } from '../../services/chat2.service';
 import { ChatMessageComponent } from '../chat-message/chat-message.component';
 import { ShowChatMessage } from '../../models/show-chat-message.model';
@@ -39,7 +39,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     isActive:false,
     errorMessage:''
   });
-
+  activeAis$!: Observable<Ai[]>;
   response = signal<string | null>(null);
   chatForm: FormGroup;
   private destroy$ = new Subject<void>();
@@ -101,6 +101,9 @@ this.aiService.getAllAis()    // Subscribe to messages from the store
       .subscribe(error => {
         this.error.set(error);
       });
+      this.activeAis$ = this.ais$.pipe(
+                  map((ais) => [...ais].filter(ai=>ai.isActive)) // Clone the array to avoid mutation
+                );
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,5 @@
 <div class="card chat-container h-screen flex flex-col">
-    <p-select [ngModel]="dropdownValue()"   (ngModelChange)="updateDropdownValue($event)"  [options]="(ais$ | async) || []" optionLabel="model" placeholder="Select" class="mb-4"/>
+    <p-select [ngModel]="dropdownValue()"   (ngModelChange)="updateDropdownValue($event)"  [options]="(activeAis$ | async) || []" optionLabel="model" placeholder="Select" class="mb-4"/>
 
     <div class="flex flex-col flex-1 bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
         <!-- Chat header -->
