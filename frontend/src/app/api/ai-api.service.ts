@@ -12,11 +12,11 @@ export class AiApiService {
 
     constructor(private http: HttpClient) {}
 
-    getAllApis(): Observable<Ai[]> {
+    getAllAis(): Observable<Ai[]> {
         return this.http.get<Ai[]>(this.apiUrl);
     }
 
-    getChatById(id: number): Observable<Ai> {
+    getAiById(id: number): Observable<Ai> {
         return this.http.get<Ai>(`${this.apiUrl}/${id}`);
     }
 
@@ -30,7 +30,7 @@ export class AiApiService {
         );
     }
 
-    updateChatMessage(
+    updateAi(
         id: number,
         chatMessage: Ai,
     ): Observable<void> {
@@ -41,8 +41,8 @@ export class AiApiService {
         );
     }
 
-    deleteChatMessage(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    deleteAi(id: number): Observable<Ai> {
+        return this.http.delete<Ai>(`${this.apiUrl}/${id}`);
     }
 
     private getHttpOptions() {

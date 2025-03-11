@@ -22,8 +22,8 @@ export class AiService {
 
     }
 
-    removeAi(ai: Ai): void {
-        this.store.dispatch(AiActions.removeAi({ ai }));
+    removeAi(id: number): void {
+        this.store.dispatch(AiActions.removeAi({ id }));
     }
     getAllAis(): Observable<Ai[]> {
         return this.http.get<Ai[]>('https://localhost:7214/ai');

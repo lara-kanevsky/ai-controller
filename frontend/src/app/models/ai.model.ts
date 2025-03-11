@@ -1,5 +1,5 @@
 export class Ai {
-    id: number | null;
+    id: number;
     url: string;
     model: string;
     ownerId:number

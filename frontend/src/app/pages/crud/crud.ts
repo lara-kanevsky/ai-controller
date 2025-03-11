@@ -164,7 +164,7 @@ export class Crud implements OnInit {
 
     products = signal<Ai[]>([]);
 
-    product!: NewAi;
+    product!: Ai;
 
     selectedProducts!: Ai[] | null;
 
@@ -182,7 +182,7 @@ export class Crud implements OnInit {
         private aiService: AiService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService
-    ) {}
+    ) { }
 
     exportCSV() {
         this.dt.exportCSV();
@@ -220,9 +220,11 @@ export class Crud implements OnInit {
     }
 
     openNew() {
-        this.product = {key:'',ownerId:1,
+        this.product = {id:-1,
+            key: '', ownerId: 1,
             url: '',
-            model: ''};
+            model: ''
+        };
         this.submitted = false;
         this.productDialog = true;
     }
@@ -262,9 +264,14 @@ export class Crud implements OnInit {
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
                 this.products.set(this.products().filter((val) => val.id !== product.id));
-                this.product = {key:'',ownerId:1,
-                    url: '',
-                    model: ''};
+                console.log("deletinf"+product.id)
+                this.aiService.removeAi(product.id);
+
+                // this.product = {id:-1,
+                //     key: '', ownerId: 1,
+                //     url: '',
+                //     model: ''
+                // };
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Successful',
@@ -306,7 +313,6 @@ export class Crud implements OnInit {
 
     saveProduct() {
         this.submitted = true;
-        let _products = this.products();
 
         this.messageService.add({
             severity: 'success',
@@ -314,17 +320,15 @@ export class Crud implements OnInit {
             detail: 'Product Created',
             life: 3000
         });
-                // this.products.set([..._products, this.product]);
+
         this.aiService.addAi(this.product);
-                // .subscribe((data: Ai[]) => {
-                //     this.products.set(data);
-                // });
 
-
-            this.productDialog = false;
-            this.product = {key:'',ownerId:1,
-                url: '',
-                model: ''};
+        this.productDialog = false;
+        this.product = {id:-1,
+            key: '', ownerId: 1,
+            url: '',
+            model: ''
+        };
 
     }
 }

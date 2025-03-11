@@ -6,21 +6,21 @@ import { AiAPIActions } from './ai-api.actions';
 export const aiFeatureKey = "ai";
 
 
-export interface AiState{
-    ais: Ai[];
+export interface AiState {
+  ais: Ai[];
 }
 
 export const initialState: AiState = {
-  ais:[]
+  ais: []
 };
 
 export const aiReducer = createReducer(
   initialState,
   on(AiAPIActions.saveSuccess, (state, action) => ({
-    ais: [...state.ais, action.ai], // Add the created Ai to the state
+    ais: [...state.ais, action.ai],
   })),
-  on(AiActions.removeAi, (currentState,action) => ({
+  on(AiActions.removeAi, (currentState, action) => ({
     ...currentState,
-    ais:currentState.ais.filter(ai=>ai.id !== action.ai.id)
+    ais: currentState.ais.filter(ai => ai.id !== action.id)
   }))
 );
