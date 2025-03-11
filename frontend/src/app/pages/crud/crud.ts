@@ -74,7 +74,7 @@ interface ExportColumn {
 
         <p-table
             #dt
-            [value]="(ais$ | async) || []" 
+            [value]="(sortedAis$ | async) || []" 
             [rows]="10"
             [columns]="cols"
             [paginator]="true"
@@ -176,6 +176,7 @@ export class Crud implements OnInit {
     submitted: boolean = false;
 
     statuses!: any[];
+    sortedAis$!: Observable<Ai[]>;
 
     @ViewChild('dt') dt!: Table;
 
@@ -200,6 +201,9 @@ export class Crud implements OnInit {
 
     ngOnInit() {
         this.loadDemoData();
+        this.sortedAis$ = this.ais$.pipe(
+            map((ais) => [...ais]) // Clone the array to avoid mutation
+          );
     }
 
     loadDemoData() {
@@ -207,7 +211,7 @@ export class Crud implements OnInit {
         this.aiService.getAllAis()
 
         this.cols = [
-            { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
+            { field: 'model', header: 'Model', customExportHeader: 'Model' },
             { field: 'name', header: 'Name' },
             { field: 'image', header: 'Image' },
             { field: 'price', header: 'Price' },
